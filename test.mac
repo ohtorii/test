@@ -1,0 +1,18 @@
+disabledraw;
+disableinvert;
+
+debuginfo 1;
+debuginfo "start";
+// ##1 = true:括弧を含む
+// ##2 = true:閉じ括弧を探索 (しない場合は括弧上にカーソルを置いて呼ぶこと)
+escape;
+setsearch "[()\\[\\]{}（）〔〕［］｛｝〈〉《》「」『』【】]", 0x00000010;
+finddown2;
+//以下ループでアウトライン解析の枠がスクロールするため非常に遅いです
+while (result && strstr(")]}）〕］｝〉》」』】", char(code)) < 0) {
+	gokakko;
+	if (!result) endmacro;
+	finddown;
+}
+debuginfo "finish";
+ 
