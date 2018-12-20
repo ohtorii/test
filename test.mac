@@ -1,0 +1,15 @@
+﻿disablebreak;
+$buf="";
+while(1){
+  #a=keypressedex(1);//Atokの確定アンドゥが起動するようです。
+  //#a=keypressedex(0);//ctrl-backspace=229
+  //#a=keypressed;
+  if(#a==0x1B){//Esc
+    break;
+  }
+  if(#a!=0){
+    $buf=$buf+"/"+str(#a);
+    title $buf;
+  }
+}
+
