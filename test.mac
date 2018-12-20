@@ -1,15 +1,37 @@
 ﻿disablebreak;
 $buf="";
 while(1){
-  #a=keypressedex(1);//Atokの確定アンドゥが起動するようです。
-  //#a=keypressedex(0);//ctrl-backspace=229
+  #a=keypressedex(1);
+  //#a=keypressedex(0);
   //#a=keypressed;
+  
   if(#a==0x1B){//Esc
     break;
   }
   if(#a!=0){
-    $buf=$buf+"/"+str(#a);
+    $buf=$buf+char(#a);
     title $buf;
+    if(false){
+		//キーの取りこぼしは発生しません。
+		sleep 500;
+	}else{
+		//キーの取りこぼしが発生します。
+	    disabledraw;
+	    selectall;
+	    backspace;
+	    enabledraw;
+	    runex "cmd.exe /c dir c:\\windows"
+	    		, 1 			//sync	  0:async 1:sync
+	    		, 0, "" 		//stdin   0:none 1:auto 2:file 3:(reserve) 4:all 5:select
+	    		, 5, "" 		//stdout  0:none 1:auto 2:file 3:add file  4:new 5:insert 6:replace
+	    		, 5, "" 		//stderr  0:none 1:=out 2:file 3:add file  4:new 5:insert 6:replace
+	    		, 0, "" 		//folder  0:none 1:current 2:specify 3:(reserve) 4:exe's folder
+	    		, 2 			//show	  0:auto 1:show 2:hide
+	    		, 1 			//nodraw  0:draw 1:no draw
+	    		, 0 			//unicode 0:ansi 2:unicode
+	    		;
+	    
+    }
   }
 }
 
