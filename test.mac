@@ -1,4 +1,7 @@
-﻿//ここのコメント行を削除すると「文法エラー」と表示され正しい挙動になります
-ここからメイン処理
+﻿debuginfo 1;
 
-message "123";
+//nameパラメータの値を取得できる
+debuginfo "[ok]name="+getinistrw(currentmacrodirectory+"\\ok.ini","property","name");
+
+//nameパラメータの値を取得できない（空白文字が返る）
+debuginfo "[ng]name="+getinistrw(currentmacrodirectory+"\\ng.ini","property","name");
