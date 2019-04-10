@@ -1,7 +1,0 @@
-﻿debuginfo 1;
-
-//nameパラメータの値を取得できる
-debuginfo "[ok]name="+getinistrw(currentmacrodirectory+"\\ok.ini","property","name");
-
-//nameパラメータの値を取得できない（空白文字が返る）
-debuginfo "[ng]name="+getinistrw(currentmacrodirectory+"\\ng.ini","property","name");
