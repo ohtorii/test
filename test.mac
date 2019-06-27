@@ -1,0 +1,25 @@
+﻿call main;
+endmacro;
+
+main:
+	##i=0;
+	while(##i<5) {// <---もしクラッシュしないようならループ回数を増やしてください
+		call Sub;
+		##i = ##i + 1;
+	}
+	return ;
+
+
+Sub:
+	##g_old_hidemaru=hidemaruhandle(0);
+	newfile;
+	##g_new_hidemaru=hidemaruhandle(0);
+	##i=0;
+	while(##i<10){
+		insert("こんにちは世界\n");
+		##i = ##i + 1;
+	}
+	moveto2 column,-1;
+	setactivehidemaru ##g_old_hidemaru;
+	closehidemaruforced ##g_new_hidemaru;
+	return;
