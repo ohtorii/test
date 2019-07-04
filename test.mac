@@ -1,25 +1,85 @@
-﻿call main;
+﻿debuginfo 1;
+call main;
 endmacro;
 
 main:
-	##i=0;
-	while(##i<5) {// <---もしクラッシュしないようならループ回数を増やしてください
-		call Sub;
-		##i = ##i + 1;
-	}
-	return ;
+	/*プロセスの候補を作成する。
+
+	＊以下VBSを秀丸マクロへ改造して移植
+	Set process = CreateObject("WbemScripting.SWbemLocator").ConnectServer.ExecQuery("Select * From Win32_Process")
+	For Each item In process
+	  WScript.Echo item.Name & "," & item.ProcessId & "," & item.WorkingSetSize/1024
+	  'item.Description, item.ProcessId "," & item.ExecutablePath
+	Next
 
 
-Sub:
-	##g_old_hidemaru=hidemaruhandle(0);
-	newfile;
-	##g_new_hidemaru=hidemaruhandle(0);
-	##i=0;
-	while(##i<10){
-		insert("こんにちは世界\n");
-		##i = ##i + 1;
+	＊プロパティの型について
+	http://www.wmifun.net/library/win32_process.html
+	*/
+	##obj=createobject("WbemScripting.SWbemLocator");
+	if(! getresultex(10)){
+		debuginfo "Failed:createobject";
+		return ;
 	}
-	moveto2 column,-1;
-	setactivehidemaru ##g_old_hidemaru;
-	closehidemaruforced ##g_new_hidemaru;
-	return;
+	##ConnectServer=member(##obj,"ConnectServer");
+	if(! getresultex(10)){
+		debuginfo "Failed:ConnectServer";
+		return ;
+	}
+	##Win32_Process=callmethod_returnobj(##ConnectServer,"ExecQuery","Select * From Win32_Process");
+	if(! getresultex(10)){
+		debuginfo "Failed:ExecQuery";
+		return ;
+	}
+	while(1){
+		##item=getcollection(##Win32_Process);
+		if(##item==0){
+			break;
+		}
+
+		//OK
+		$$name=getpropstr( ##item, "Name" );//string
+		if(! getresultex(10)){
+			debuginfo "Failed:Name";
+			break;
+		}
+		debuginfo "$$name="+$$name;
+
+		//OK
+		$$process_id=str(getpropnum( ##item, "ProcessId" ));//uint32
+		if(! getresultex(10)){
+			debuginfo "Failed:ProcessId";
+			break;
+		}
+		debuginfo "$$process_id="+$$process_id;
+
+		//OK
+		$$session_id=str(getpropnum( ##item, "SessionId" ));//uint32
+		if(! getresultex(10)){
+			debuginfo "Failed:SessionId";
+			break;
+		}
+		debuginfo "$$session_id="+$$session_id;
+
+		if(true){
+			//NG
+			$$execution_state=str(getpropnum( ##item, "ExecutionState" ));//uint16
+			if(! getresultex(10)){
+				debuginfo "Failed:ExecutionState";
+				break;
+			}
+			debuginfo "$$execution_state="+$$execution_state;
+
+			//NG
+			$$working_set_size=str(getpropnum( ##item, "WorkingSetSize" ));//uint64
+			if(! getresultex(10)){
+				debuginfo "Failed:WorkingSetSize";
+				break;
+			}
+			debuginfo "$$working_set_size"+$$working_set_size;
+		}
+	}
+	##item=getcollection(##Win32_Process,3);
+	releaseobject(##obj);
+	return "1";
+
