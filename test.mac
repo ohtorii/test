@@ -1,1 +1,7 @@
-﻿setpathhist 4,"";
+﻿newfile;
+#n=split($faces, "😙 😎 😍"," ");
+#i=0;
+while(#i<#n){
+	insert $faces[#i]+"\n";
+	#i = #i + 1;
+}
