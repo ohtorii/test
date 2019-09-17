@@ -1,0 +1,4 @@
+/<TreeWord>
+/0000,0002,0000,00000000,40011511,"texture2d\\s+\\i\\c*(?=[ \\t\\r\\n]*<)","Texture"
+/<TreeWordEx>
+/TreeWordExData:0
