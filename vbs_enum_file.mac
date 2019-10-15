@@ -1,0 +1,20 @@
+﻿//フォルダ内のファイルを列挙する
+newfile;
+#objFSO = createobject("Scripting.FileSystemObject");
+#objFolder=member( #objFSO, "GetFolder", "c:\\windows" );
+#objCollection=getpropobj(#objFolder,"Files");
+while(1){
+	#objFile = getcollection( #objCollection );
+	if(#objFile==0){
+		break;
+	}
+
+	insert("Path="+getpropstr(#objFile,"Path")+"\n");
+	
+	insert("Name="+getpropstr(#objFile,"Name")+"\n");
+	
+	$ext=member( #objFSO, "GetExtensionName", $path );
+	insert("Ext="+$ext+"\n");
+}
+releaseobject #objFSO;
+
