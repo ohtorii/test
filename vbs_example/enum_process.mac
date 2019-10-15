@@ -1,0 +1,79 @@
+﻿//
+//プロセスを列挙する
+//
+
+newfile;
+call main;
+endmacro;
+
+main:
+	/*
+	＊以下VBSを秀丸マクロへ移植
+	Set process = CreateObject("WbemScripting.SWbemLocator").ConnectServer.ExecQuery("Select * From Win32_Process")
+	For Each item In process
+	  WScript.Echo item.Name & "," & item.ProcessId & "," & item.WorkingSetSize/1024
+	  'item.Description, item.ProcessId "," & item.ExecutablePath
+	Next
+	*/
+	##obj=createobject("WbemScripting.SWbemLocator");
+	if(! getresultex(10)){
+		return "0";
+	}
+	##ConnectServer=member(##obj,"ConnectServer");
+	if(! getresultex(10)){
+		return "0";
+	}
+	##Win32_Process=callmethod_returnobj(##ConnectServer,"ExecQuery","Select * From Win32_Process");
+	if(! getresultex(10)){
+		return "0";
+	}
+	insert("プロセス名\tプロセスID\tワーキングセットサイズ\n");
+	while(1){
+		##item=getcollection(##Win32_Process);
+		if(##item==0){
+			break;
+		}
+		$$name=getpropstr( ##item, "Name" );
+		$$process_id=str(getpropnum( ##item, "ProcessId" ));//uint32
+
+		call number_format val(getpropstr( ##item, "WorkingSetSize" ))/1024;
+		$$working_set_size=$$return + "K";
+
+		insert($$name+"\t"+$$process_id+"\t"+$$working_set_size+"\n");
+	}
+	##item=getcollection(##Win32_Process,3);
+	releaseobject(##obj);
+	return "1";
+
+number_format:
+	/*３桁ごとのカンマ区切り文字列に変換する
+	1234567 -> "1,234,567"
+	*/
+	##sep=3;
+
+	##number = ##1;
+	$$n=str(##number);
+
+	##len=strlen($$n);
+	##remain=##len%##sep;//余り
+
+	//(memo) $$result="1"
+	$$result = leftstr($$n,##remain);
+
+	/*(memo)
+	[##i=0]	$$result="1,234"
+	[##i=1]	$$result="1,234,567"
+	*/
+	##loop=##len/##sep;
+	##i=0;
+	while(##i<##loop){
+		$$part = midstr($$n,##remain+(##i*3),##sep);
+		if($$result==""){
+			$$result = $$result + $$part;
+		}else{
+			$$result = $$result + "," + $$part;
+		}
+
+		##i = ##i + 1;
+	}
+	return $$result;
