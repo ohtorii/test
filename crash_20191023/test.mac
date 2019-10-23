@@ -1,0 +1,23 @@
+﻿disablebreak;
+call main;
+endmacro;
+
+main:
+	newfile;
+	##main_hidemaru=hidemaruhandle(0);
+
+	newfile;
+	##temp_hidemaru=hidemaruhandle(0);
+	runex "cmd.exe /c dir c:\\*"
+			, 1 			//sync	  0:async 1:sync
+			, 0, "" 		//stdin   0:none 1:auto 2:file 3:(reserve) 4:all 5:select
+			, 5, "" 		//stdout  0:none 1:auto 2:file 3:add file  4:new 5:insert 6:replace
+			, 1, "" 		//stderr  0:none 1:=out 2:file 3:add file  4:new 5:insert 6:replace
+			, 0, "" 		//folder  0:none 1:current 2:specify 3:(reserve) 4:exe's folder
+			, 2 			//show	  0:auto 1:show 2:hide
+			, 1 			//nodraw  0:draw 1:no draw
+			, 1 			//unicode 0:ansi 2:unicode
+			;
+	setactivehidemaru   ##main_hidemaru;
+	closehidemaruforced ##temp_hidemaru;
+	return;
