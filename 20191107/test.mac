@@ -1,0 +1,28 @@
+﻿disablebreak;
+call main;
+endmacro;
+
+main:
+	while(true){
+		##in = keypressedex(1);
+		if(##in==0x1D){	//↑
+			up;
+			continue;
+		}
+		if(##in==0x1F){	//↓
+			down;
+			continue;
+		}
+		if (##in == 0x1C){	// [←]
+			left;
+			continue;
+		}
+		if (##in == 0x1E){// [→]
+			right;
+			continue;
+		}
+		if(##in==0x1B){	//esc
+			break;
+		}
+	}
+	return ;
