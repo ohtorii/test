@@ -1,0 +1,47 @@
+﻿/*
+
+↓ここから
+#
+#
+# --
+↑ここまで削除するマクロ
+
+
+＊＊＊＊　例　＊＊＊＊
+(Before)
+#コメント1
+#コメント2
+# --
+foo
+bar
+
+(after)
+foo
+bar
+
+*/
+call main;
+endmacro;
+
+main:
+	debuginfo 1;
+	debuginfo "enter main.";
+
+	gofiletop;
+	searchdown2 "^# --$",regular,nohilight;
+	if(result==false){
+		debuginfo "  ret @1";
+		return;
+	}
+	if(selecting==0){
+		//64bit版では処理はここに来ませんが、
+		//32bit版では何故か処理がここに来ます。
+		debuginfo "  ret @2";
+		return false;
+	}
+	beginlinesel;
+	gofiletop;
+	backspace;
+
+	debuginfo "success.";
+	return;
