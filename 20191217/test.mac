@@ -20,28 +20,15 @@ foo
 bar
 
 */
-call main;
-endmacro;
 
-main:
-	debuginfo 1;
-	debuginfo "enter main.";
+if(true){
+	setcompatiblemode
+		0x00000002 |	/* 折りたたみを無視してなるべく維持 */
+		0x00000008 |	/* 部分編集を無視してなるべく維持 */
+		0x00000030 |	/* 同じファイルを２つ開くことを禁止する（ジャンプする） */
+		0x00002000 |	/*貼り付け後のカーソル位置　→　最後に移動 */
+		0x00000200 |	/*検索での表示　→　範囲選択*/
+		0x00020000 ;	/*マクロ終了後に検索条件をマクロ実行前と同じに戻します。*/
+}
 
-	gofiletop;
-	searchdown2 "^# --$",regular,nohilight;
-	if(result==false){
-		debuginfo "  ret @1";
-		return;
-	}
-	if(selecting==0){
-		//64bit版では処理はここに来ませんが、
-		//32bit版では何故か処理がここに来ます。
-		debuginfo "  ret @2";
-		return false;
-	}
-	beginlinesel;
-	gofiletop;
-	backspace;
-
-	debuginfo "success.";
-	return;
+execmacro currentmacrodirectory+"\\sub.mac";
