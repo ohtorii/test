@@ -12,8 +12,10 @@ main:
 		return;
 	}
 	if(selecting==0){
-		//64bit版では処理はここに来ませんが、
-		//32bit版では何故か処理がここに来ます。
+		/*
+		setcompatiblemode 文で「検索での表示　→　範囲選択」へ変更しているが
+		何故か処理がここに来ます。
+		*/
 		debuginfo "  ret @2";
 		return false;
 	}
