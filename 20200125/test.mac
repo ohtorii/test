@@ -1,0 +1,102 @@
+﻿start:
+
+call main;
+endmacro;
+
+main:;
+	#xOrg=x;
+	#yOrg=y;
+	disabledraw;
+
+	//どちらか一つ選んでください。
+	call main_example_1;
+	//call main_example_2;
+
+	moveto #xOrg,#yOrg;
+	newfile;
+	call insert_outline;
+	return ;
+
+/*その1
+
+掲示板で秀丸担当さんが投稿されたマクロを少し改造。
+
+※掲示板
+https://www.maruo.co.jp/hidesoft/4/x09060_.html?a=2#9061
+
+（実行結果）
+6 : main:
+32 : main_example_1:
+61 : main_example_2:
+83 : insert_outline:
+91 : last:
+93 : last:
+
+（問題点）
+・startラベルを取得しない。
+・lastラベルを2つ取得する。
+*/
+main_example_1:
+	gofiletop;
+	while(1){
+	  nextoutlineitem;
+	  if(!result){
+	    break;
+	  }
+
+	  $outline[#num_outline]=str(lineno) + " : " + gettitle(4);
+	  #num_outline = #num_outline + 1;
+	}
+	return ;
+
+/*その2
+gettitle(4)の直前でnextoutlineitemを行う。
+
+（実行結果）
+1 : start:
+6 : main:
+33 : main_example_1:
+55 : main_example_2:
+80 : insert_outline:
+88 : last:
+90 : last:
+
+
+（問題点）
+lastラベルを２つ取得する。
+*/
+main_example_2:
+	gofiletop;
+
+	//はじめのアウトライン項目をできる限り選択する。
+	nextoutlineitem;
+	if(!result){
+		return true;
+	}
+	prevoutlineitem;
+	if(!result){
+		return true;
+	}
+
+	while(1){
+	  $outline[#num_outline]=str(lineno) + " : " + gettitle(4);
+	  #num_outline = #num_outline + 1;
+
+	  nextoutlineitem;
+	  if(!result){
+	    break;
+	  }
+	}
+	return ;
+
+
+insert_outline:
+	#i=0;
+	while(#i<#num_outline){
+		insert($outline[#i]);insertreturn;
+		#i = #i + 1;
+	}
+	return ;
+
+last:
+	return ;
