@@ -9,8 +9,9 @@ main:;
 	disabledraw;
 
 	//どちらか一つ選んでください。
-	call main_example_1;
+	//call main_example_1;
 	//call main_example_2;
+	call main_example_3;
 
 	moveto #xOrg,#yOrg;
 	newfile;
@@ -89,6 +90,15 @@ main_example_2:
 	}
 	return ;
 
+
+main_example_3:
+	#num_outline=0;
+	##n=outlineitemcount;
+	while(#num_outline<##n){
+	  	$outline[#num_outline]=getoutlineitem(#num_outline,0);
+	  	#num_outline = #num_outline + 1;
+	}
+	return ;
 
 insert_outline:
 	#i=0;
