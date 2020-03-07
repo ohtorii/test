@@ -1,0 +1,3 @@
+3rd-party\zip.cpp(3) : void encode(){
+3rd-party\zip.cpp(7) : void decode(){
+app\main.cpp(3) : int main(int argc, char*argv[]){
