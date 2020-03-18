@@ -1,0 +1,33 @@
+﻿call main;
+endmacro;
+
+main:
+	call gather;
+
+	newfile;
+	disabledraw;
+
+	insert("インデントの深さ\t行番号\tアウトライン\n");
+	while(##i<#g_outline_count){
+		insert($g_outline_indent[##i] + "\t" + $g_outline_line[##i] + "\t" + $g_outline_text[##i] + "\n");
+		##i = ##i + 1;
+	}
+
+	clearupdated;
+	return ;
+
+
+gather:
+	#g_outline_count=0;
+	##n=outlineitemcount;
+	while(1){
+		if(##n <= #g_outline_count){
+            break;
+        }
+		$g_outline_text[#g_outline_count]  =getoutlineitem(#g_outline_count,0);
+		$g_outline_line[#g_outline_count]  =getoutlineitem(#g_outline_count,1);
+		$g_outline_indent[#g_outline_count]=getoutlineitem(#g_outline_count,2);
+
+		#g_outline_count = #g_outline_count + 1;
+	}
+	return true;
