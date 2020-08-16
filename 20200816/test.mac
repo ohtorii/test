@@ -1,8 +1,28 @@
-﻿debuginfo 1;
+﻿
 
-//とりあえず、10回ループしてみる
-#i=0;
-while(#i < 10){
-	debuginfo "tags="+gettagsfile(#i);
-	#i = #i + 1;
-}
+call main;
+endmacro;
+
+main:
+	debuginfo 1;
+	debuginfo "==== getoutlineitem ====";
+	##n=outlineitemcount;
+	##i=0;
+	while(##i<##n){
+		$$text=getoutlineitem(##i,0);
+		$$line=getoutlineitem(##i,1);
+		$$level=getoutlineitem(##i,2);
+		debuginfo $$text+" "+$$line+":"+$$level;
+
+		##i = ##i + 1;
+	}
+	return ;
+
+func2:
+
+
+
+func3:
+
+
+func4:
