@@ -1,0 +1,8 @@
+﻿debuginfo 1;
+
+//とりあえず、10回ループしてみる
+#i=0;
+while(#i < 10){
+	debuginfo "tags="+gettagsfile(#i);
+	#i = #i + 1;
+}
