@@ -1,0 +1,16 @@
+﻿if(tabmode==false){
+    message "タブモードで実行してください";
+    endmacro;
+}
+
+setbackgroundmode 1;
+#current_hidemaru=hidemaruhandle(0);
+
+#i = 0;
+while( #i < tabgrouptotal ) {
+    #handle = getcurrenttab( true, #i );//または #handle = gettabhandle( true, #i, 0 );
+    setactivehidemaru #handle;
+    #i = #i + 1;
+}
+
+setactivehidemaru #current_hidemaru;
