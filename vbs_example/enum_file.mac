@@ -11,8 +11,10 @@ while(1){
 		break;
 	}
 
+	//Path=C:\Windows\ActiveXVersion.ocx
 	insert("Path="+getpropstr(#objFile,"Path")+"\n");
 
+	//Name=ActiveXVersion.ocx
 	insert("Name="+getpropstr(#objFile,"Name")+"\n");
 
 	$ext=member( #objFSO, "GetExtensionName", $path );

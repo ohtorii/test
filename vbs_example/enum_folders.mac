@@ -1,0 +1,18 @@
+﻿//
+//フォルダを列挙する
+//
+newfile;
+#objFSO = createobject("Scripting.FileSystemObject");
+#objFolder=member( #objFSO, "GetFolder", "c:\\windows" );
+#objCollection=getpropobj(#objFolder,"subfolders");
+while(1){
+	#objItem = getcollection( #objCollection );
+	if(#objItem==0){
+		break;
+	}
+	//Name=System32,twain_32,WinSxS, ...
+	insert("Name="+getpropstr(#objItem,"Name")+"\n");
+}
+releaseobject #objFSO;
+
+
